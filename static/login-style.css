@@ -1,0 +1,488 @@
+/* 登录注册页面样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 480px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+.header-decoration {
+    height: 8px;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+.logo-section {
+    padding: 40px 40px 30px;
+    text-align: center;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.logo-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+}
+
+.logo-subtitle {
+    font-size: 14px;
+    opacity: 0.95;
+    letter-spacing: 1px;
+}
+
+.tab-switch {
+    display: flex;
+    padding: 0 40px;
+    margin-top: -20px;
+    position: relative;
+    z-index: 1;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tab-btn.active {
+    color: #10b981;
+    background: white;
+    box-shadow: 0 -4px 15px rgba(16, 185, 129, 0.1);
+}
+
+.form-container {
+    padding: 30px 40px 40px;
+}
+
+.form-container.hidden {
+    display: none;
+}
+
+.login-method-switch {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    background: #f3f4f6;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.method-btn {
+    flex: 1;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 10px;
+}
+
+.method-btn.active {
+    background: white;
+    color: #10b981;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.login-method-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.login-method-content.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.form-input::placeholder {
+    color: #9ca3af;
+}
+
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+}
+
+.toggle-password-btn:hover {
+    color: #6b7280;
+}
+
+.eye-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.eye-icon.hidden {
+    display: none;
+}
+
+.sms-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.sms-input-group .form-input {
+    flex: 1;
+}
+
+.sms-btn {
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.sms-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.sms-btn:active {
+    transform: translateY(0);
+}
+
+.sms-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #6b7280;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: #10b981;
+}
+
+.forgot-link {
+    font-size: 14px;
+    color: #10b981;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-link:hover {
+    color: #059669;
+}
+
+.agreement-check {
+    margin-bottom: 24px;
+}
+
+.agreement-check .checkbox-label {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.agreement-check a {
+    color: #10b981;
+    text-decoration: none;
+}
+
+.agreement-check a:hover {
+    text-decoration: underline;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.divider span {
+    padding: 0 16px;
+}
+
+.wechat-login-btn {
+    width: 100%;
+    padding: 14px;
+    background: white;
+    color: #07c160;
+    border: 2px solid #07c160;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.wechat-login-btn:hover {
+    background: #f0fdf4;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(7, 193, 96, 0.2);
+}
+
+.wechat-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 24px;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 9999;
+    animation: slideDown 0.3s ease-out;
+}
+
+.toast.hidden {
+    display: none;
+}
+
+.toast.success {
+    background: rgba(16, 185, 129, 0.95);
+}
+
+.toast.error {
+    background: rgba(239, 68, 68, 0.95);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.with-signature {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+    background: #ffffff;
+    padding: 6px 16px;
+    border-radius: 8px;
+}
+
+.with-signature a {
+    color: #8A2BE2;
+    text-decoration: none;
+}
+
+.with-signature a:hover {
+    text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+    .login-card {
+        border-radius: 20px;
+    }
+
+    .logo-section {
+        padding: 30px 30px 20px;
+    }
+
+    .logo-title {
+        font-size: 28px;
+    }
+
+    .tab-switch {
+        padding: 0 30px;
+    }
+
+    .form-container {
+        padding: 24px 30px 30px;
+    }
+
+    .form-input {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .sms-btn {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+
+    .submit-btn {
+        padding: 14px;
+        font-size: 15px;
+    }
+}
+
+/* 开发模式提示面板动画 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

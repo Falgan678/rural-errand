@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录/注册 - 农村跑腿</title>
+    <link rel="icon" href="data:,">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="login-style.css?v=20260213">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- 顶部装饰 -->
+            <div class="header-decoration"></div>
+            
+            <!-- Logo和标语 -->
+            <div class="logo-section">
+                <h1 class="logo-title">农村跑腿</h1>
+                <p class="logo-subtitle">乡里乡亲，互帮互助</p>
+            </div>
+
+            <!-- 登录/注册切换 -->
+            <div class="tab-switch">
+                <button class="tab-btn active" data-tab="login">登录</button>
+                <button class="tab-btn" data-tab="register">注册</button>
+            </div>
+
+            <!-- 登录表单 -->
+            <div class="form-container" id="loginForm">
+                <!-- 密码登录 -->
+                <div class="login-method-content" id="passwordLogin">
+                    <div class="form-group">
+                        <label class="form-label">用户名 / 手机号</label>
+                        <input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名或手机号">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" class="form-input" id="loginPassword" placeholder="请输入密码（至少6位）">
+                            <button type="button" class="toggle-password-btn" data-target="loginPassword">
+                                <svg class="eye-icon eye-off" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                                <svg class="eye-icon eye-on hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe">
+                            <span>记住我</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 协议勾选 -->
+                <div class="agreement-check">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="loginAgreement">
+                        <span>我已阅读并同意 <a href="#">《用户协议》</a> 和 <a href="#">《隐私政策》</a></span>
+                    </label>
+                </div>
+
+                <!-- 登录按钮 -->
+                <button class="submit-btn" id="loginSubmitBtn">登录</button>
+            </div>
+
+            <!-- 注册表单 -->
+            <div class="form-container hidden" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">用户名</label>
+                    <input type="text" class="form-input" id="registerUsername" placeholder="请输入用户名（2-20个字符）">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">手机号</label>
+                    <input type="tel" class="form-input" id="registerPhone" placeholder="请输入手机号" maxlength="11">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" class="form-input" id="registerPassword" placeholder="请输入密码（至少6位）">
+                        <button type="button" class="toggle-password-btn" data-target="registerPassword">
+                            <svg class="eye-icon eye-off" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                            <svg class="eye-icon eye-on hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">确认密码</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" class="form-input" id="registerConfirmPassword" placeholder="请再次输入密码">
+                        <button type="button" class="toggle-password-btn" data-target="registerConfirmPassword">
+                            <svg class="eye-icon eye-off" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                            <svg class="eye-icon eye-on hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 协议勾选 -->
+                <div class="agreement-check">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="registerAgreement">
+                        <span>我已阅读并同意 <a href="#">《用户协议》</a> 和 <a href="#">《隐私政策》</a></span>
+                    </label>
+                </div>
+
+                <!-- 注册按钮 -->
+                <button class="submit-btn" id="registerSubmitBtn">注册</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示消息 -->
+    <div class="toast hidden" id="toast"></div>
+
+    <script src="config.js?v=202604151640"></script>
+    <script src="login-main.js?v=202604151640"></script>
+
+    <!-- 签名 -->
+    <footer class="with-signature">
+        <p>由 发龙 通过AI自然语言生成</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+# ===== 敏感信息（绝不可提交）=====
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# ===== 大文件 / 二进制（GitHub 100MB 限制）=====
+微信web开发者工具/
+wechat_devtools_*.exe
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.dmg
+*.iso
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# ===== Node / 微信小程序 =====
+node_modules/
+miniprogram/miniprogram_npm/
+**/node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# ===== IDE / 系统 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*.log
+
+# ===== 备份 / 临时 =====
+*.bak
+*.tmp
+*.old
+backup/
+backups/
+.cache/
+
+# ===== 项目特定（敏感或体积过大）=====
+rural-errand-deploy.zip
+农村跑腿_完整文档包_*.zip
+beian-site/
+local-dev-schema.sql
+update_order_coordinates.sql
+cloudrun-seed.sql
+test-api.cjs
+
+# ===== CodeBuddy / AI 工具缓存（本地数据，不入版本库）=====
+.codebuddy/
+.agent/
+.cursor/

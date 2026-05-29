@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农村跑腿 - 客户端</title>
+    <link rel="icon" href="data:,">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="client-style.css?v=202604151820">
+    <script src="https://webapi.amap.com/maps?v=2.0&amp;key=94ff4e2ad347e0a005218f4f6b8aa458&amp;plugin=AMap.Driving,AMap.Geocoder"></script>
+    <!-- Flatpickr 日历组件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="logo">农村跑腿</div>
+        <div class="nav-buttons">
+            <!-- 按钮已移除，功能移至Banner区域 -->
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 我有需求页面 -->
+        <div class="page" id="customer-page">
+            <!-- 轮播图 -->
+            <div class="carousel-container">
+                <div class="carousel-wrapper" id="carouselWrapper">
+                    <div class="carousel-item active">
+                        <div class="carousel-content">
+                            <h3>🎉 欢迎使用农村跑腿</h3>
+                            <p>乡里乡亲，互帮互助，让生活更便捷</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="carousel-content">
+                            <h3>📱 使用指南</h3>
+                            <p>发布需求 → 跑腿员接单 → 送达完成 → 评价</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="carousel-content">
+                            <h3>💰 赚取收益</h3>
+                            <p>成为跑腿员，帮助他人的同时赚取跑腿费</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-dots" id="carouselDots">
+                    <span class="dot active" data-index="0"></span>
+                    <span class="dot" data-index="1"></span>
+                    <span class="dot" data-index="2"></span>
+                </div>
+            </div>
+
+            <!-- Banner -->
+            <div class="banner">
+                <button class="banner-nav-btn" data-role="customer">我有需求</button>
+                <div class="banner-content">
+                    <h2>需要帮忙跑腿</h2>
+                    <p>乡里乡亲，互帮互助</p>
+                </div>
+                <button class="banner-nav-btn active" data-role="runner">我当跑腿</button>
+            </div>
+
+            <!-- 统计数据 -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="todayOrders">28</div>
+                    <div class="stat-label">今日订单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🕐</div>
+                    <div class="stat-value" id="pendingOrders">15</div>
+                    <div class="stat-label">待接单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value" id="totalServices">156</div>
+                    <div class="stat-label">累计服务</div>
+                </div>
+            </div>
+
+            <!-- 发布需求按钮 -->
+            <button class="publish-btn" id="publishBtn">+ 发布跑腿需求</button>
+
+            <!-- 地图分布按钮 -->
+            <button class="map-btn js-map-btn" id="mapBtnCustomer">📍 查看跑腿需求分布图</button>
+
+            <!-- 最新跑腿需求 -->
+            <div class="section-header">
+                <h3>最新跑腿需求</h3>
+                <a href="#" class="view-all">查看全部</a>
+            </div>
+
+            <div class="order-list" id="customerOrderList"></div>
+        </div>
+
+        <!-- 我当跑腿页面 -->
+        <div class="page hidden" id="runner-page">
+            <!-- Banner -->
+            <div class="banner">
+                <h2>附近的跑腿订单</h2>
+                <p>就近接单，赚取跑腿费</p>
+            </div>
+
+            <!-- 统计数据 -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="runnerTodayOrders">28</div>
+                    <div class="stat-label">今日订单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🕐</div>
+                    <div class="stat-value" id="runnerPendingOrders">15</div>
+                    <div class="stat-label">待接单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value" id="runnerTotalServices">156</div>
+                    <div class="stat-label">累计服务</div>
+                </div>
+            </div>
+
+            <!-- 地图分布按钮 -->
+            <button class="map-btn js-map-btn" id="mapBtnRunner" style="margin-top: 20px;">📍 查看跑腿需求分布图</button>
+
+            <!-- 位置信息 -->
+            <div class="location-info">
+                <div class="location-icon">📍</div>
+                <div>
+                    <div class="location-text text-xs">当前位置：大洋镇蕉树村中心小学附近</div>
+                    <div class="location-sub">以下是离您最近的订单</div>
+                </div>
+            </div>
+
+            <!-- 附近待接订单 -->
+            <div class="section-header">
+                <h3>附近待接订单</h3>
+                <a href="#" class="view-all">查看全部</a>
+            </div>
+
+            <div class="order-list" id="runnerOrderList"></div>
+        </div>
+
+        <!-- 订单页面 -->
+        <div class="page hidden" id="orders-page">
+            <!-- 角色切换按钮 -->
+            <div class="role-switch-container">
+                <button class="role-switch-btn active" data-type="my-orders">我有需求</button>
+                <button class="role-switch-btn" data-type="my-tasks">我当跑腿</button>
+            </div>
+
+            <!-- 订单状态筛选 -->
+            <div class="order-tabs">
+                <button class="order-tab active" data-status="all">全部 (<span id="allCount">0</span>)</button>
+                <button class="order-tab" data-status="pending">待接单 (<span id="pendingCount">0</span>)</button>
+                <button class="order-tab" data-status="ongoing">进行中 (<span id="ongoingCount">0</span>)</button>
+                <button class="order-tab" data-status="completed">已完成 (<span id="completedCount">0</span>)</button>
+                <button class="order-tab" data-status="cancelled">已取消 (<span id="cancelledCount">0</span>)</button>
+            </div>
+
+            <!-- 搜索和筛选工具栏 -->
+            <div class="search-filter-bar">
+                <!-- 主搜索框 -->
+                <div class="search-box-wrapper">
+                    <input type="text" id="orderSearchInput" placeholder="搜索订单号、关键词、地址、货物名称..." class="search-input" autocomplete="off">
+                    <button class="search-icon" id="searchButton" type="button">🔍</button>
+                    <button class="clear-search-btn hidden" id="clearSearchBtn" type="button">×</button>
+                    
+                    <!-- 搜索历史下拉 -->
+                    <div class="search-history-dropdown hidden" id="searchHistoryDropdown">
+                        <div class="search-history-header">
+                            <span>搜索历史</span>
+                            <button class="clear-history-btn" id="clearHistoryBtn">清空</button>
+                        </div>
+                        <div class="search-history-list" id="searchHistoryList">
+                            <!-- 动态生成搜索历史 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 排序和快捷筛选 -->
+                <div class="quick-filters">
+                    <select id="sortSelect" class="sort-select">
+                        <option value="time_desc">时间从新到旧</option>
+                        <option value="time_asc">时间从旧到新</option>
+                        <option value="fee_desc">费用从高到低</option>
+                        <option value="fee_asc">费用从低到高</option>
+                        <option value="distance_asc">距离从近到远</option>
+                        <option value="distance_desc">距离从远到近</option>
+                    </select>
+                    
+                    <button class="quick-filter-btn" id="urgentFilterBtn" data-filter="urgent">
+                        <span class="filter-icon">⚡</span>
+                        <span>加急订单</span>
+                    </button>
+                    
+                    <button class="quick-filter-btn" id="cashFilterBtn" data-filter="cash">
+                        <span class="filter-icon">💵</span>
+                        <span>现金到付</span>
+                    </button>
+                </div>
+
+                <!-- 高级筛选按钮 -->
+                <button class="advanced-filter-toggle" id="advancedFilterToggle">
+                    <span>高级筛选</span>
+                    <span class="filter-count-badge hidden" id="filterCountBadge">0</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+
+                <!-- 高级筛选面板 -->
+                <div class="advanced-filter-panel hidden" id="advancedFilterPanel">
+                    <div class="filter-row">
+                        <!-- 时间筛选 -->
+                        <div class="filter-item">
+                            <label class="filter-label">时间范围</label>
+                            <select id="timeFilterSelect" class="filter-select">
+                                <option value="all">全部时间</option>
+                                <option value="1">最近一天</option>
+                                <option value="3">最近三天</option>
+                                <option value="7">最近一周</option>
+                                <option value="30">最近一月</option>
+                                <option value="custom">自定义时间</option>
+                            </select>
+                        </div>
+
+                        <!-- 自定义时间范围（隐藏的日历输入） -->
+                        <div class="filter-item hidden" id="customDateRangeWrapper">
+                            <label class="filter-label">选择日期</label>
+                            <input type="text" id="customDateRange" class="filter-input" placeholder="选择日期范围" readonly="">
+                        </div>
+                    </div>
+
+                    <div class="filter-row">
+                        <!-- 费用范围 -->
+                        <div class="filter-item">
+                            <label class="filter-label">配送费用（元）</label>
+                            <div class="range-inputs">
+                                <input type="number" id="minFee" class="filter-input-small" placeholder="最低" min="0" step="1">
+                                <span class="range-separator">-</span>
+                                <input type="number" id="maxFee" class="filter-input-small" placeholder="最高" min="0" step="1">
+                            </div>
+                        </div>
+
+                        <!-- 距离范围 -->
+                        <div class="filter-item">
+                            <label class="filter-label">配送距离（公里）</label>
+                            <div class="range-inputs">
+                                <input type="number" id="minDistance" class="filter-input-small" placeholder="最近" min="0" step="0.1">
+                                <span class="range-separator">-</span>
+                                <input type="number" id="maxDistance" class="filter-input-small" placeholder="最远" min="0" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-row">
+                        <!-- 订单类型 -->
+                        <div class="filter-item">
+                            <label class="filter-label">订单类型</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="filterUrgent" class="filter-checkbox">
+                                    <span>加急订单</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="filterCash" class="filter-checkbox">
+                                    <span>现金到付</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="filter-reset-btn" id="resetFilters">重置筛选</button>
+                        <button class="filter-apply-btn" id="applyFilters">应用筛选</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单列表 -->
+            <div class="order-list" id="ordersPageList"></div>
+        </div>
+
+        <!-- 我的页面 -->
+        <div class="page hidden" id="profile-page">
+            <!-- 用户信息卡片 -->
+            <div class="profile-card">
+                <div class="avatar-container" id="avatarContainer">
+                    <img id="userAvatar" src="" alt="头像" class="avatar-image hidden">
+                    <div class="avatar-emoji" id="avatarEmoji">👤</div>
+                    <div class="avatar-upload-overlay">
+                        <span>点击上传</span>
+                    </div>
+                    <input type="file" id="avatarInput" accept="image/*" class="hidden">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name">
+                        <span id="userName">张三</span>
+                        <span class="edit-icon">✏️</span>
+                    </div>
+                    <div class="profile-phone" id="userPhone">138****5678</div>
+                    <div class="profile-location">
+                        <span class="location-icon">📍</span>
+                        <span id="userLocation">当前位置：东村村委会附近</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价统计 -->
+            <div class="rating-stats">
+                <div class="rating-item">
+                    <div class="rating-icon">🏅</div>
+                    <div class="rating-value" id="goodRate">98%</div>
+                    <div class="rating-label">好评率</div>
+                </div>
+                <div class="rating-item">
+                    <div class="rating-icon">⭐</div>
+                    <div class="rating-value" id="userRating">4.9</div>
+                    <div class="rating-label">评分</div>
+                </div>
+                <div class="rating-item">
+                    <div class="rating-icon">🕐</div>
+                    <div class="rating-value" id="totalOrders">156</div>
+                    <div class="rating-label">完成订单</div>
+                </div>
+            </div>
+
+            <!-- 收益卡片 -->
+            <div class="earnings-card">
+                <div class="earnings-header">
+                    <div class="earnings-icon">💰</div>
+                    <div class="earnings-title">我的收益</div>
+                    <button class="withdraw-btn" id="withdrawBtn">提现</button>
+                </div>
+                <div class="earnings-amount">¥<span id="totalEarnings">1,258.50</span></div>
+                <div class="earnings-details">
+                    <div class="earnings-detail-item">
+                        <div class="detail-label">本月收益</div>
+                        <div class="detail-value">¥<span id="monthEarnings">456.00</span></div>
+                    </div>
+                    <div class="earnings-detail-item">
+                        <div class="detail-label">待结算</div>
+                        <div class="detail-value">¥<span id="pendingEarnings">68.00</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能菜单 -->
+            <div class="menu-list">
+                <div class="menu-item" id="earningsRecordBtn">
+                    <div class="menu-icon">🕐</div>
+                    <div class="menu-text">接单记录</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item" id="menuMyReviews">
+                    <div class="menu-icon">⭐</div>
+                    <div class="menu-text">我的评价</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item" id="menuSettings">
+                    <div class="menu-icon">⚙️</div>
+                    <div class="menu-text">设置</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item" id="menuFeedback">
+                    <div class="menu-icon">📝</div>
+                    <div class="menu-text">建议与举报</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item" id="logoutBtn">
+                    <div class="menu-icon">🚪</div>
+                    <div class="menu-text">退出登录</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+            </div>
+
+            <!-- 协议 -->
+            <div class="agreement">
+                <p>使用本服务即表示您同意</p>
+                <p><a href="#">用户协议</a> 和 <a href="#">隐私政策</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-page="customer">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">首页</div>
+        </button>
+        <button class="nav-item" data-page="orders">
+            <div class="nav-icon">📦</div>
+            <div class="nav-label">订单</div>
+        </button>
+        <button class="nav-item" data-page="profile">
+            <div class="nav-icon">👤</div>
+            <div class="nav-label">我的</div>
+        </button>
+    </nav>
+
+    <!-- 发布需求弹窗 -->
+    <div class="modal hidden" id="publishModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>发布跑腿需求</h3>
+                <button class="close-btn" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>联系方式</label>
+                    <input type="tel" placeholder="请输入手机号" id="contactPhone">
+                </div>
+                <div class="form-group">
+                    <label>取件地址</label>
+                    <input type="text" placeholder="请输入取件地址" id="pickupAddress">
+                </div>
+                <div class="form-group">
+                    <label>送达地址</label>
+                    <input type="text" placeholder="请输入送达地址" id="deliveryAddress">
+                </div>
+                <div class="form-group">
+                    <label>配送时间</label>
+                    <div class="time-picker-trigger" id="timePickerTrigger">
+                        <span id="selectedTimeDisplay">请选择配送时间</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    <input type="hidden" id="deliveryTime">
+                </div>
+                <div class="form-group">
+                    <label>配送货物</label>
+                    <input type="text" placeholder="请输入配送货物" id="goodsName">
+                </div>
+                <div class="form-group">
+                    <label>配送费用（元）</label>
+                    <input type="number" placeholder="请输入配送费用" id="deliveryFee">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isUrgent"> 紧急订单
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>备注（不超过100字）</label>
+                    <textarea placeholder="请输入备注信息" id="remark" maxlength="100"></textarea>
+                    <div class="char-count"><span id="remarkCount">0</span>/100</div>
+                </div>
+                <div class="form-group">
+                    <label>支付方式</label>
+                    <div class="payment-options">
+                        <label><input type="radio" name="payment" value="wechat" checked=""> 微信支付</label>
+                        <label><input type="radio" name="payment" value="alipay"> 支付宝</label>
+                        <label><input type="radio" name="payment" value="cash"> 现金到付</label>
+                    </div>
+                </div>
+                <button class="submit-btn" id="submitOrder">发布订单</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 地图弹窗 -->
+    <div class="modal hidden" id="mapModal">
+        <div class="modal-content map-modal-content">
+            <div class="modal-header">
+                <h3>跑腿需求分布图</h3>
+                <button class="close-btn" id="closeMapModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="mapContainer" style="width: 100%; height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提现弹窗 -->
+    <div class="modal hidden" id="withdrawModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>申请提现</h3>
+                <button class="close-btn" id="closeWithdrawModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>提现金额</label>
+                    <input type="number" placeholder="请输入提现金额" id="withdrawAmount" step="0.01">
+                    <div class="hint-text">可提现金额：¥<span id="availableAmount">68.00</span></div>
+                </div>
+                <button class="submit-btn" id="submitWithdraw">提交申请</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 时间选择器弹窗 -->
+    <div class="modal hidden" id="timePickerModal">
+        <div class="modal-content time-picker-modal">
+            <div class="modal-header">
+                <h3>选择配送时间</h3>
+                <button class="close-btn" id="closeTimePicker">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="time-picker-container">
+                    <div class="time-picker-column" id="yearColumn"></div>
+                    <div class="time-picker-column" id="monthColumn"></div>
+                    <div class="time-picker-column" id="dayColumn"></div>
+                    <div class="time-picker-column" id="hourColumn"></div>
+                    <div class="time-picker-column" id="minuteColumn"></div>
+                </div>
+                <button class="submit-btn" id="confirmTime">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 建议与举报弹窗 -->
+    <div class="modal hidden" id="feedbackModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>建议与举报</h3>
+                <button class="close-btn" id="closeFeedbackModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>反馈类型</label>
+                    <select id="feedbackType" class="form-input" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px;">
+                        <option value="suggestion">功能建议</option>
+                        <option value="complaint">违规举报</option>
+                        <option value="bug">问题反馈</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>反馈内容</label>
+                    <textarea id="feedbackContent" placeholder="请详细描述您遇到的问题或建议..." style="width: 100%; height: 120px; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; resize: none;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>联系方式（选填）</label>
+                    <input type="text" id="feedbackContact" placeholder="手机号/微信号" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px;">
+                </div>
+                <button class="submit-btn" id="submitFeedback">提交反馈</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="modal hidden" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>设置</h3>
+                <button class="close-btn" id="closeSettingsModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="menu-list">
+                    <div class="menu-item" id="editProfileBtn">
+                        <div class="menu-text">修改个人信息</div>
+                        <div class="menu-arrow">›</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-text">账号安全</div>
+                        <div class="menu-arrow">›</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-text">消息通知</div>
+                        <div class="menu-arrow">›</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-text">隐私设置</div>
+                        <div class="menu-arrow">›</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-text">清除缓存</div>
+                        <div class="menu-arrow">12.5MB</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-text">关于我们</div>
+                        <div class="menu-arrow">v1.0.0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改个人信息弹窗 -->
+    <div class="modal hidden" id="editProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>修改个人信息</h3>
+                <button class="close-btn" id="closeEditProfileModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" id="editUserName" placeholder="请输入姓名" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>手机号</label>
+                    <input type="tel" id="editUserPhone" placeholder="请输入手机号" class="form-input" maxlength="11">
+                    <div class="hint-text">修改手机号需要验证码验证</div>
+                </div>
+                <div class="form-group hidden" id="phoneVerifyGroup">
+                    <label>验证码</label>
+                    <div class="sms-input-group">
+                        <input type="text" id="editPhoneCode" placeholder="请输入验证码" class="form-input">
+                        <button class="sms-btn" id="sendEditPhoneCode">获取验证码</button>
+                    </div>
+                </div>
+                <button class="submit-btn" id="submitEditProfile">保存修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我的评价弹窗 -->
+    <div class="modal hidden" id="reviewsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>我的评价</h3>
+                <button class="close-btn" id="closeReviewsModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-container" style="margin-bottom: 20px;">
+                    <div class="stat-item">
+                        <div class="stat-value" style="color: #f59e0b;">5.0</div>
+                        <div class="stat-label">综合评分</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">好评率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">共获评价</div>
+                    </div>
+                </div>
+                <div class="review-list" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="review-item" style="background: #f9fafb; padding: 15px; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-weight: bold;">张**</span>
+                            <span style="color: #9ca3af; font-size: 12px;">2024-02-12</span>
+                        </div>
+                        <div style="color: #f59e0b; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                        <div style="color: #4b5563; font-size: 14px;">送货速度很快，服务态度很好！</div>
+                    </div>
+                    <div class="review-item" style="background: #f9fafb; padding: 15px; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-weight: bold;">李**</span>
+                            <span style="color: #9ca3af; font-size: 12px;">2024-02-10</span>
+                        </div>
+                        <div style="color: #f59e0b; margin-bottom: 5px;">⭐⭐⭐⭐⭐</div>
+                        <div style="color: #4b5563; font-size: 14px;">准时送达，东西完好无损。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 订单详情弹窗 -->
+    <div class="modal hidden" id="orderDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>订单详情</h3>
+                <button class="close-btn" id="closeOrderDetailModal">×</button>
+            </div>
+            <div class="modal-body" id="orderDetailContent">
+                <!-- 动态内容将在这里渲染 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 评价弹窗 -->
+    <div class="modal hidden" id="reviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>评价跑腿员</h3>
+                <button class="close-btn" id="closeReviewModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>服务评分</label>
+                    <div class="rating-stars" id="ratingStars">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                    <div class="rating-text" id="ratingText">请选择评分</div>
+                </div>
+                <div class="form-group">
+                    <label>评价内容（选填）</label>
+                    <textarea id="reviewComment" placeholder="分享您的使用体验..." style="width: 100%; height: 100px; padding: 12px; border: 2px solid #e5e7eb; border-radius: 12px; resize: none; font-size: 14px;"></textarea>
+                </div>
+                <input type="hidden" id="reviewOrderId">
+                <input type="hidden" id="reviewRunnerId">
+                <input type="hidden" id="reviewRating" value="0">
+                <button class="submit-btn" id="submitReview">提交评价</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 取消订单对话框 -->
+    <div class="modal hidden" id="cancelOrderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>取消订单</h3>
+                <button class="close-btn" id="closeCancelOrderModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>取消原因</label>
+                    <select id="cancelReason" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px;">
+                        <option value="">请选择取消原因</option>
+                        <option value="找到其他跑腿员">找到其他跑腿员</option>
+                        <option value="不需要了">不需要了</option>
+                        <option value="信息填写错误">信息填写错误</option>
+                        <option value="费用太高">费用太高</option>
+                        <option value="其他原因">其他原因</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>详细说明（选填）</label>
+                    <textarea id="cancelReasonDetail" placeholder="请详细说明取消原因..." style="width: 100%; height: 80px; padding: 12px; border: 2px solid #e5e7eb; border-radius: 12px; resize: none; font-size: 14px;"></textarea>
+                </div>
+                <input type="hidden" id="cancelOrderId">
+                <div style="display: flex; gap: 10px;">
+                    <button class="submit-btn" id="confirmCancelOrder" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">确认取消</button>
+                    <button class="submit-btn" id="cancelCancelOrder" style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js?v=202604151700"></script>
+    <script src="client-main.js?v=202604151700"></script>
+
+    <!-- 签名 -->
+    <footer class="with-signature">
+        <p>由 发龙 通过AI自然语言生成</p>
+    </footer>
+
+
+
+
+
+
+</body>
+</html>

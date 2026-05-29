@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>农村跑腿</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="logo">农村跑腿</div>
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-role="customer">我有需求</button>
+            <button class="nav-btn" data-role="runner">我当跑腿</button>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 我有需求页面 -->
+        <div class="page" id="customer-page">
+            <!-- Banner -->
+            <div class="banner">
+                <h2>需要帮忙跑腿？</h2>
+                <p>乡里乡亲，互帮互助</p>
+            </div>
+
+            <!-- 统计数据 -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value">28</div>
+                    <div class="stat-label">今日订单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🕐</div>
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">待接单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">累计服务</div>
+                </div>
+            </div>
+
+            <!-- 发布需求按钮 -->
+            <button class="publish-btn" id="publishBtn">+ 发布跑腿需求</button>
+
+            <!-- 地图分布按钮 -->
+            <button class="map-btn" id="mapBtn">📍 查看跑腿需求分布图</button>
+
+            <!-- 最新跑腿需求 -->
+            <div class="section-header">
+                <h3>最新跑腿需求</h3>
+                <a href="#" class="view-all">查看全部</a>
+            </div>
+
+            <div class="order-list" id="customerOrderList"></div>
+        </div>
+
+        <!-- 我当跑腿页面 -->
+        <div class="page hidden" id="runner-page">
+            <!-- Banner -->
+            <div class="banner">
+                <h2>附近的跑腿订单</h2>
+                <p>就近接单，赚取跑腿费</p>
+            </div>
+
+            <!-- 统计数据 -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value">28</div>
+                    <div class="stat-label">今日订单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🕐</div>
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">待接单</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">累计服务</div>
+                </div>
+            </div>
+
+            <!-- 位置信息 -->
+            <div class="location-info">
+                <div class="location-icon">📍</div>
+                <div>
+                    <div class="location-text">当前位置：东村村委会附近</div>
+                    <div class="location-sub">以下是离您最近的订单</div>
+                </div>
+            </div>
+
+            <!-- 附近待接订单 -->
+            <div class="section-header">
+                <h3>附近待接订单</h3>
+                <a href="#" class="view-all">查看全部</a>
+            </div>
+
+            <div class="order-list" id="runnerOrderList"></div>
+        </div>
+
+        <!-- 订单页面 -->
+        <div class="page hidden" id="orders-page">
+            <!-- 角色切换 -->
+            <div class="order-role-switch">
+                <button class="role-switch-btn active" data-type="my-orders">我有需求</button>
+                <button class="role-switch-btn" data-type="my-tasks">我当跑腿</button>
+            </div>
+
+            <!-- 订单状态筛选 -->
+            <div class="order-tabs">
+                <button class="order-tab active" data-status="all">全部 (<span id="allCount">0</span>)</button>
+                <button class="order-tab" data-status="pending">待接单 (<span id="pendingCount">0</span>)</button>
+                <button class="order-tab" data-status="ongoing">进行中 (<span id="ongoingCount">0</span>)</button>
+                <button class="order-tab" data-status="completed">已完成 (<span id="completedCount">0</span>)</button>
+            </div>
+
+            <!-- 搜索和筛选区域 -->
+            <div class="search-filter-container" style="margin: 15px 20px; display: flex; gap: 10px; background: white; padding: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <div class="search-box" style="flex: 1; position: relative;">
+                    <input type="text" id="orderSearchInput" placeholder="搜索订单关键词、地址、费用..." style="width: 100%; padding: 10px 15px 10px 35px; border: 1px solid #e5e7eb; border-radius: 8px; outline: none; font-size: 14px;">
+                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af;">🔍</span>
+                </div>
+                <div class="time-filter" style="position: relative; min-width: 120px;">
+                    <select id="timeFilterSelect" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; outline: none; font-size: 14px; background: white; cursor: pointer;">
+                        <option value="all">全部时间</option>
+                        <option value="1">最近一天</option>
+                        <option value="3">最近三天</option>
+                        <option value="7">最近一周</option>
+                        <option value="30">最近一月</option>
+                        <option value="custom">自定义时间</option>
+                    </select>
+                    <!-- 隐藏的日期选择器输入框 -->
+                    <input type="text" id="customDateRange" style="display: none;">
+                </div>
+            </div>
+
+            <!-- 订单列表 -->
+            <div class="order-list" id="ordersPageList"></div>
+        </div>
+
+        <!-- 我的页面 -->
+        <div class="page hidden" id="profile-page">
+            <!-- 用户信息卡片 -->
+            <div class="profile-card">
+                <div class="avatar-emoji">👤</div>
+                <div class="profile-info">
+                    <div class="profile-name">
+                        <span>张三</span>
+                        <span class="edit-icon">✏️</span>
+                    </div>
+                    <div class="profile-phone">138****5678</div>
+                    <div class="profile-location">
+                        <span class="location-icon">📍</span>
+                        当前位置：东村村委会附近
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价统计 -->
+            <div class="rating-stats">
+                <div class="rating-item">
+                    <div class="rating-icon">🏅</div>
+                    <div class="rating-value">98%</div>
+                    <div class="rating-label">好评率</div>
+                </div>
+                <div class="rating-item">
+                    <div class="rating-icon">⭐</div>
+                    <div class="rating-value">4.9</div>
+                    <div class="rating-label">评分</div>
+                </div>
+                <div class="rating-item">
+                    <div class="rating-icon">🕐</div>
+                    <div class="rating-value">24</div>
+                    <div class="rating-label">发布订单</div>
+                </div>
+            </div>
+
+            <!-- 功能菜单 -->
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="menu-icon">🕐</div>
+                    <div class="menu-text">我的订单</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">⭐</div>
+                    <div class="menu-text">我的评价</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">📃</div>
+                    <div class="menu-text"><a href="disclaimer.html" style="color:inherit; text-decoration:none;">免责声明</a></div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">⚙️</div>
+                    <div class="menu-text">设置</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">❓</div>
+                    <div class="menu-text">帮助与反馈</div>
+                    <div class="menu-arrow">›</div>
+                </div>
+            </div>
+
+            <!-- 协议 -->
+            <div class="agreement">
+                <p>使用本服务即表示您同意</p>
+                <p><a href="user-agreement.html">用户协议</a> 和 <a href="privacy-policy.html">隐私政策</a></p>
+                <p style="margin-top:8px; font-size:12px; color:#ef4444;">免责：本平台仅提供信息展示，交易请线下自行完成。</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-page="customer">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">首页</div>
+        </button>
+        <button class="nav-item" data-page="orders">
+            <div class="nav-icon">📦</div>
+            <div class="nav-label">订单</div>
+        </button>
+        <button class="nav-item" data-page="profile">
+            <div class="nav-icon">👤</div>
+            <div class="nav-label">我的</div>
+        </button>
+    </nav>
+
+    <!-- 发布需求弹窗 -->
+    <div class="modal hidden" id="publishModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>发布跑腿需求</h3>
+                <button class="close-btn" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>联系方式</label>
+                    <input type="tel" placeholder="请输入手机号" id="contactPhone">
+                </div>
+                <div class="form-group">
+                    <label>取件地址</label>
+                    <input type="text" placeholder="请输入取件地址" id="pickupAddress">
+                </div>
+                <div class="form-group">
+                    <label>送达地址</label>
+                    <input type="text" placeholder="请输入送达地址" id="deliveryAddress">
+                </div>
+                <div class="form-group">
+                    <label>配送时间</label>
+                    <input type="text" placeholder="例如：今天下午3点前" id="deliveryTime">
+                </div>
+                <div class="form-group">
+                    <label>配送货物</label>
+                    <input type="text" placeholder="请输入配送货物" id="goodsName">
+                </div>
+                <div class="form-group">
+                    <label>配送费用（元）</label>
+                    <input type="number" placeholder="请输入配送费用" id="deliveryFee">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isUrgent"> 紧急订单
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>备注（不超过100字）</label>
+                    <textarea placeholder="请输入备注信息" id="remark" maxlength="100"></textarea>
+                    <div class="char-count"><span id="remarkCount">0</span>/100</div>
+                </div>
+                <div class="form-group" style="background: #f0fdf4; border: 1px solid #10b981; border-radius: 8px; padding: 12px; font-size: 13px; color: #065f46;">
+                    <i class="fas fa-info-circle"></i> 提示：本平台仅提供信息展示，交易请线下联系，注意安全。
+                </div>
+                <button class="submit-btn" id="submitOrder">发布需求</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 地图弹窗 -->
+    <div class="modal hidden" id="mapModal">
+        <div class="modal-content map-modal-content">
+            <div class="modal-header">
+                <h3>跑腿需求分布图</h3>
+                <button class="close-btn" id="closeMapModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="mapContainer" style="width: 100%; max-height: 600px; overflow-y: auto;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+
+    <!-- 签名 -->
+    <footer class="with-signature">
+        <p>由 发龙 通过AI自然语言生成</p>
+    </footer>
+</body>
+</html>

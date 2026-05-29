@@ -1,0 +1,6 @@
+{
+  "envId": "cloud1-1goqml70f3d9d1d1",
+  "cloudrun": {
+    "name": "rural-errand-api"
+  }
+}

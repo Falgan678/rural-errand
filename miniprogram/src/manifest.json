@@ -1,0 +1,28 @@
+{
+  "name": "乡邻快帮",
+  "appid": "__UNI__ERRAND01",
+  "description": "农村社区便民信息发布与邻里互助交流工具",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "wx784dd003c72665b8",
+    "setting": {
+      "urlCheck": false
+    },
+    "usingComponents": true,
+    "permission": {
+      "scope.userLocation": {
+        "desc": "您的位置信息将用于匹配附近的邻里求助需求"
+      }
+    }
+  },
+  "h5": {
+    "devServer": {
+      "https": false
+    },
+    "router": {
+      "mode": "hash"
+    }
+  }
+}

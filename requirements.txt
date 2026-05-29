@@ -1,0 +1,8 @@
+fastapi>=0.110
+uvicorn[standard]>=0.27
+pymysql>=1.1
+python-multipart>=0.0.9
+bcrypt>=4.1
+tencentcloud-sdk-python>=3.0
+# 可选：开启 Redis 会话持久化（设置 REDIS_URL 时启用）
+redis>=5.0
