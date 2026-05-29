@@ -17,7 +17,7 @@
 | **登录页** | <https://cloud1-1goqml70f3d9d1d1-1394833136.tcloudbaseapp.com/login.html> | 用户/跑腿员/管理员统一登录 |
 | **管理后台** | <https://cloud1-1goqml70f3d9d1d1-1394833136.tcloudbaseapp.com/admin-panel.html> | 订单管理、用户管理、对账 |
 | **后端 API** | `https://rural-errand-api-246677-4-1394833136.sh.run.tcloudbase.com/api` | FastAPI（Swagger 文档：在 URL 末尾加 `/docs`） |
-| **GitHub Pages 镜像** | <https://falgan678.github.io/rural-errand/> | 静态镜像（API 仍指向上面的 CloudRun） |
+| **GitHub Pages 镜像** | <https://falgan678.github.io/rural-errand/> | 静态镜像（开启方式：仓库 Settings → Pages → Source 选 `Deploy from a branch` → 分支 `main` / 目录 `/static`，几分钟后生效。API 仍指向上面的 CloudRun） |
 
 > 💡 **测试账号**：见 [`TEST_ACCOUNTS.md`](./TEST_ACCOUNTS.md)
 >
